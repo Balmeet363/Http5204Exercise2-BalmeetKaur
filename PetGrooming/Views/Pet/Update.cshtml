@@ -1,13 +1,29 @@
-﻿@model PetGrooming.Models.Pet
+﻿@model PetGrooming.Models.ViewModels.UpdatePet
 @{
     ViewBag.Title = "Update";
 }
 
 <h2>Update</h2>
-<form method="POST" action="/Pet/Update/@Model.PetID">
-    petname:<input id="PetName" name="PetName" value="@Model.PetName" /><br />
-    petcolor:<input id="PetColor" name="PetColor" value="@Model.Color" /><br />
-    weight:<input id="PetWeight" name="PetWeight" value="@Model.Weight" /><br />
-    notes:<textarea id="PetNotes" name="PetNotes">@Model.Notes</textarea><br />
+<span><a href="/Pet/List">Back To Page</a></span>
+<form method="POST" action="/Pet/Update/@Model.pet.PetID">
+    petname:<input id="PetName" name="PetName" value="@Model.pet.PetName" /><br />
+    petcolor:<input id="PetColor" name="PetColor" value="@Model.pet.Color" /><br />
+    weight:<input id="PetWeight" name="PetWeight" value="@Model.pet.Weight" /><br />
+    notes:<textarea id="PetNotes" name="PetNotes">@Model.pet.Notes</textarea><br />
+
+    <span>Species:</span>
+    <select name="SpeciesID" id="SpeciesID">
+        @{ 
+            foreach(var species in Model.species)
+            {
+                string selected = "";
+                if(species.SpeciesID == Model.pet.SpeciesID)
+                {
+                    selected = "selected";
+                }
+               <option value="@species.SpeciesID" @selected>@species.Name</option>
+            }
+        }
+    </select>
     <input type="submit" id="submit" value="update pet" />
 </form>
