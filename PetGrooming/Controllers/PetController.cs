@@ -46,7 +46,7 @@ namespace PetGrooming.Controllers
         public ActionResult List()
         {
             //How could we modify this to include a search bar?
-            var pets = db.Pets.SqlQuery("Select * from Pets").ToList();
+                List<Pet> pets = db.Pets.SqlQuery("Select * from Pets").ToList();
             return View(pets);
         }
 
@@ -113,9 +113,42 @@ namespace PetGrooming.Controllers
 
         //TODO:
         //Update
+        //URL: /Pet/Update/2 ->Update pet with id 2
+        public ActionResult Update(int id)
+        {
+            //how to get pet data?
+            //run query
+            Pet selectedpet = db.Pets.SqlQuery("Select * from pets where petid = @PetID", new SqlParameter("@PetID", id)).FirstOrDefault();
+            //need the pet data
+            return View(selectedpet);
+        }
         //[HttpPost] Update
+        [HttpPost]
+        public ActionResult Update(string PetName,string PetColor, string PetNotes,double PetWeight ,int id)
+        {
+            //step1:pull data
+            Debug.WriteLine("I am pulling data of " + PetName + "and " + PetColor + "and" + PetWeight + "and" + PetNotes.ToString());
+            //step2: update pet details with respective petid
+            string query = "update pets set PetName = @PetName, Weight = @PetWeight, color = @PetColor, Notes = @PetNotes where petid =" + id;
+            SqlParameter[] sqlparams = new SqlParameter[4];
+            sqlparams[0] = new SqlParameter("@PetName", PetName);
+            sqlparams[1] = new SqlParameter("@PetWeight", PetWeight);
+            sqlparams[2] = new SqlParameter("@PetColor", PetColor);
+            sqlparams[3] = new SqlParameter("@PetNotes", PetNotes);
+            db.Database.ExecuteSqlCommand(query,sqlparams);
+            //Moving back to pet update
+            return RedirectToAction("List");
+        }
         //[HttpPost] Delete
-        //(optional) Delete
+        
+        //Delete pet details with respective petid
+        public ActionResult Delete(int? id)
+        {
+            string query = "delete from pets where petid = "+ id;
+            db.Database.ExecuteSqlCommand(query);
+            return RedirectToAction("List");
+        }
+        
         
 
         protected override void Dispose(bool disposing)
