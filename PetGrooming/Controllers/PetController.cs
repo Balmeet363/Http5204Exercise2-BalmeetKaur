@@ -114,7 +114,6 @@ namespace PetGrooming.Controllers
 
         //TODO:
         //Update
-        //URL: /Pet/Update/2 ->Update pet with id 2
         public ActionResult Update(int id)
         {
             //how to get pet data?

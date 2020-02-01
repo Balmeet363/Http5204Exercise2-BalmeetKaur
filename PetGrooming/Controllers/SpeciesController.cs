@@ -57,8 +57,7 @@ namespace PetGrooming.Controllers
         {
             // Inserting into species table their respective name 
             string query = "insert into species(Name) values(@speciesName)";
-            SqlParameter[] sqlparams = new SqlParameter[1];
-            sqlparams[0] = new SqlParameter("@speciesName", speciesName);
+            SqlParameter[] sqlparams = { new SqlParameter("@speciesName", speciesName) };
             db.Database.ExecuteSqlCommand(query,sqlparams);
             //going back to species list after adding new species
             return RedirectToAction("List");
@@ -80,8 +79,7 @@ namespace PetGrooming.Controllers
             Debug.WriteLine("I am pulling data of " + speciesName);
             //updating species details
             string query = "update species set Name = @speciesName where speciesid =" + id;
-            SqlParameter[] sqlparams = new SqlParameter[1];
-            sqlparams[0] = new SqlParameter("@speciesName", speciesName);
+            SqlParameter[] sqlparams = {new SqlParameter("@speciesName", speciesName)};
             db.Database.ExecuteSqlCommand(query, sqlparams);
             //going  back to species update
             return RedirectToAction("List");
